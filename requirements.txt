@@ -1,0 +1,7 @@
+openai
+pandas
+pyyaml
+click
+rich
+python-dotenv
+requests

@@ -1,0 +1,24 @@
+I want you to act as an expert technical writer targeting professional engineers. Your task is to generate a comprehensive datasheet for a specific sensor, which I will provide below, based solely on your current knowledge base up to your last training cut-off. The output must be in Markdown (.md) format.
+
+**Sensor:** {sensor_brand} {sensor_type}
+
+Please structure the datasheet logically, including standard sections applicable to most sensors, such as:
+
+*   **Disclaimer:** Start with a clear disclaimer stating that this datasheet is generated based on general knowledge up to your last training data cut-off, is not an official manufacturer document, and accuracy cannot be guaranteed. Advise that the official manufacturer datasheet should always be consulted for critical applications and final design decisions.
+*   **General Description:** Brief overview of the sensor's function and technology.
+*   **Theory of Operation / Sensing Principle:** Explain the underlying mechanism of how the sensor works, if known.
+*   **Features:** Key capabilities and selling points.
+*   **Potential Applications:** Common use cases for this type of sensor.
+*   **Pin Configuration and Description:** Pin names, numbers, and functions.
+*   **Absolute Maximum Ratings:** Stress ratings beyond which damage may occur.
+*   **Electrical Characteristics:** Detailed voltage levels, input/output characteristics, etc.
+    *   Include a subsection for **Power Consumption Breakdown** detailing current draw in different operational modes (e.g., active/measurement, idle/sleep, communication active) if known.
+*   **Operating Conditions:** Recommended supply voltage, environmental ranges like temperature, humidity if applicable.
+*   **Sensor Performance / Specifications:** Detailing key metrics relevant to the sensor type (e.g., range, accuracy, resolution, sensitivity, response time, stability, etc.). Fill this based on the specific sensor requested.
+*   **Communication Protocol / Interface:** Detailing the method used (e.g., I2C, SPI, Analog Voltage, Single-Wire, UART, etc.), including relevant timings or parameters if known.
+*   **Register Map:** If the sensor typically uses register-based configuration/data access via protocols like I2C/SPI, detail the known registers, their addresses, functions, and bit fields.
+*   **Package Information / Mechanical Dimensions:** Describe common package(s) and physical dimensions if known.
+*   **Basic Usage / Application Information:** Describe a typical connection diagram, required external components, and provide pseudo-code or steps for initialization, configuration, and data reading.
+*   **Compliance and Certifications:** Include a placeholder section mentioning common standards like RoHS, CE, FCC, noting that specific compliance should be verified with the manufacturer.
+
+Ensure the information provided within each section is as detailed and accurate as your knowledge allows for the specified sensor. Use standard Markdown formatting, including for any tables.

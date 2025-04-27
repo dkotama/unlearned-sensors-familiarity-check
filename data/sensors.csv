@@ -1,0 +1,4 @@
+Brand,Type,DatasheetPath
+Adafruit,DHT22,data/datasheets/DHT22.md
+SparkFun,DS18B20,data/datasheets/DS18B20.md
+Bosch,BME280,data/datasheets/BME280.md

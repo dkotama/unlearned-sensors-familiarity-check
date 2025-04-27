@@ -1,0 +1,7 @@
+Timestamp,SensorBrand,SensorType,Model,ResponseTimeSeconds,InputTokens,OutputTokens,ResponseLengthChars2025-04-27 00:14:15,Adafruit,DHT22,qwen/qwen-2.5-vl-72b-instruct,5.778436,141,60,293
+2025-04-27 00:25:39,Adafruit,DHT22,qwen/qwen-2.5-vl-72b-instruct,72.702728,587,1541,6543
+2025-04-27 00:27:49,Adafruit,DHT22,meta-llama/llama-3.1-70b-instruct,25.817991,604,1172,4930
+2025-04-27 00:28:10,Adafruit,DHT22,mistralai/mistral-large-2411,20.622903,662,1827,5981
+2025-04-27 00:28:31,Adafruit,DHT22,anthropic/claude-3.5-sonnet,21.169813,643,1204,4100
+2025-04-27 00:29:25,Adafruit,DHT22,anthropic/claude-3-opus,54.055119,643,1496,4969
+2025-04-27 00:29:30,Adafruit,DHT22,google/gemini-flash-1.5-8b,5.363977,586,1005,4287
