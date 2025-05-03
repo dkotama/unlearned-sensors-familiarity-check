@@ -16,7 +16,7 @@ from datetime import datetime
 # Add the parent directory to sys.path to import other modules
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.api_client import OpenRouterClient
+from src.api_client import APIClientFactory
 from src.prompt_generator import PromptGenerator
 from src.result_processor import ResultProcessor
 from src.metrics_logger import MetricsLogger
@@ -45,9 +45,10 @@ def display_models(models):
     table = Table(title="Available Models")
     table.add_column("Index", style="cyan")
     table.add_column("Model ID", style="magenta")
+    table.add_column("Provider", style="green")
     
     for idx, model in enumerate(models):
-        table.add_row(str(idx), model)
+        table.add_row(str(idx), model['id'], model['provider'])
     
     console.print(table)
 
@@ -64,10 +65,14 @@ def run(config):
     cfg = load_config(config)
     
     # Initialize components
-    client = OpenRouterClient(cfg['openrouter_api_key'], cfg['api_base_url'], cfg['request_timeout'])
     prompt_gen = PromptGenerator(cfg['prompt_template_path'])
     result_proc = ResultProcessor(cfg['results_base_path'])
     metrics_logger = MetricsLogger(cfg['metrics_log_path'])
+    
+    # Create API clients for each provider
+    clients = {}
+    for provider_name, provider_config in cfg['providers'].items():
+        clients[provider_name] = APIClientFactory.get_client(provider_config, provider_name)
     
     # Load sensor data
     sensors_df = pd.read_csv(cfg['data_path'])
@@ -111,14 +116,22 @@ def run(config):
             # Generate prompt for this sensor (no datasheet content needed as per updated requirements)
             prompt = prompt_gen.generate_prompt(sensor_brand, sensor_type, "")
             
-            for model in selected_models:
+            for model_info in selected_models:
+                model_id = model_info['id']
+                provider = model_info['provider']
                 completed += 1
-                status.update(f"[bold green]Processing request {completed}/{total_requests}: {sensor_brand} {sensor_type} with {model}[/bold green]")
+                status.update(f"[bold green]Processing request {completed}/{total_requests}: {sensor_brand} {sensor_type} with {model_id} via {provider}[/bold green]")
+                
+                # Select the appropriate client based on provider
+                client = clients.get(provider)
+                if not client:
+                    console.print(f"[red]✗ Error on {completed}/{total_requests}: No client found for provider {provider}[/red]")
+                    continue
                 
                 # Send request to model
                 start_time = datetime.now()
                 try:
-                    response = client.send_request(model, prompt)
+                    response = client.send_request(model_id, prompt)
                     end_time = datetime.now()
                     
                     response_time = (end_time - start_time).total_seconds()
@@ -128,17 +141,17 @@ def run(config):
                     response_length = len(response_text)
                     
                     # Save result
-                    result_filename = result_proc.save_result(sensor_brand, sensor_type, model, response_text)
+                    result_filename = result_proc.save_result(sensor_brand, sensor_type, model_id, response_text)
                     
                     # Log metrics
                     metrics_logger.log_metrics(
-                        sensor_brand, sensor_type, model,
+                        sensor_brand, sensor_type, model_id,
                         response_time, input_tokens, output_tokens, response_length
                     )
                     
-                    console.print(f"[green]✓ Completed {completed}/{total_requests}: {sensor_brand} {sensor_type} with {model} (saved to {result_filename})[/green]")
+                    console.print(f"[green]✓ Completed {completed}/{total_requests}: {sensor_brand} {sensor_type} with {model_id} (saved to {result_filename})[/green]")
                 except Exception as e:
-                    console.print(f"[red]✗ Error on {completed}/{total_requests}: {sensor_brand} {sensor_type} with {model}: {str(e)}[/red]")
+                    console.print(f"[red]✗ Error on {completed}/{total_requests}: {sensor_brand} {sensor_type} with {model_id}: {str(e)}[/red]")
     
     console.print("[bold green]All requests completed![/bold green]")
     

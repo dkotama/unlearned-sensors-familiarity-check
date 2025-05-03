@@ -1,12 +1,36 @@
 """
-API client for communicating with OpenRouter to send prompts to various LLMs.
+API client for communicating with various LLM providers.
 """
 
 import requests
 import json
+import os
 from datetime import datetime
+from dotenv import load_dotenv
+import google.generativeai as genai
 
-class OpenRouterClient:
+# Load environment variables for API keys
+load_dotenv()
+
+class APIClient:
+    """Base interface for API clients."""
+    def send_request(self, model, prompt):
+        """
+        Send a prompt to the specified model.
+        
+        Args:
+            model (str): Model identifier
+            prompt (str): The prompt text to send
+            
+        Returns:
+            dict: Response data including text and token counts
+            
+        Raises:
+            Exception: If the API request fails
+        """
+        raise NotImplementedError
+
+class OpenRouterClient(APIClient):
     def __init__(self, api_key, base_url, timeout=120):
         """
         Initialize the OpenRouter client.
@@ -76,3 +100,77 @@ class OpenRouterClient:
             if hasattr(e, 'response') and e.response is not None:
                 error_msg += f" Response: {e.response.text}"
             raise Exception(error_msg)
+
+class GeminiClient(APIClient):
+    def __init__(self, api_key_env, timeout=120):
+        """
+        Initialize the Gemini client.
+        
+        Args:
+            api_key_env (str): Environment variable name for Gemini API key
+            timeout (int): Request timeout in seconds
+        """
+        self.api_key = os.getenv(api_key_env)
+        if not self.api_key:
+            raise Exception(f"Gemini API key not found in environment variable {api_key_env}")
+        self.timeout = timeout
+        genai.configure(api_key=self.api_key)
+    
+    def send_request(self, model, prompt):
+        """
+        Send a prompt to the specified Gemini model.
+        
+        Args:
+            model (str): Model identifier (e.g., "google/gemini-2.5-pro-exp-03-25")
+            prompt (str): The prompt text to send
+            
+        Returns:
+            dict: Response data including text and token counts
+            
+        Raises:
+            Exception: If the API request fails
+        """
+        try:
+            # Extract the model name after the provider prefix
+            model_name = model.split('/')[-1]
+            gen_model = genai.GenerativeModel(model_name)
+            response = gen_model.generate_content(prompt)
+            
+            # Extract relevant information
+            result = {
+                "text": response.text if hasattr(response, 'text') else response.candidates[0].content.parts[0].text,
+                "input_tokens": response.usage_metadata.prompt_token_count if hasattr(response, 'usage_metadata') else 0,
+                "output_tokens": response.usage_metadata.candidates_token_count if hasattr(response, 'usage_metadata') else 0
+            }
+            
+            return result
+            
+        except Exception as e:
+            raise Exception(f"Gemini API request failed: {str(e)}")
+
+class APIClientFactory:
+    @staticmethod
+    def get_client(provider_config, provider_name):
+        """
+        Factory method to get the appropriate API client based on provider.
+        
+        Args:
+            provider_config (dict): Configuration for the provider
+            provider_name (str): Name of the provider
+            
+        Returns:
+            APIClient: Instance of the appropriate client
+        """
+        if provider_name == "openrouter":
+            return OpenRouterClient(
+                provider_config['api_key'],
+                provider_config['base_url'],
+                provider_config.get('timeout', 120)
+            )
+        elif provider_name == "google_gemini":
+            return GeminiClient(
+                provider_config['api_key_env'],
+                provider_config.get('timeout', 120)
+            )
+        else:
+            raise Exception(f"Unsupported provider: {provider_name}")
