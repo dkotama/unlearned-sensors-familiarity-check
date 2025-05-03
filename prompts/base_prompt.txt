@@ -1,10 +1,12 @@
-I want you to act as an expert technical writer targeting professional engineers. Your task is to generate a comprehensive datasheet for a specific sensor, which I will provide below, based solely on your current knowledge base up to your last training cut-off. The output must be in Markdown (.md) format.
+I want you to act as an expert technical writer targeting professional engineers. 
+Your task is to generate a comprehensive datasheet for a specific sensor, which I will provide below, based solely on your current knowledge base up to your last training cut-off. The output must be in Markdown (.md) format.
 
 **Sensor:** {sensor_brand} {sensor_type}
 
 Please structure the datasheet logically, including standard sections applicable to most sensors, such as:
 
 *   **Disclaimer:** Start with a clear disclaimer stating that this datasheet is generated based on general knowledge up to your last training data cut-off, is not an official manufacturer document, and accuracy cannot be guaranteed. Advise that the official manufacturer datasheet should always be consulted for critical applications and final design decisions.
+*   **Manufacturer Info** : Add important information about manufacturer and manufacturing info such as production date, website of manufacturer here.
 *   **General Description:** Brief overview of the sensor's function and technology.
 *   **Theory of Operation / Sensing Principle:** Explain the underlying mechanism of how the sensor works, if known.
 *   **Features:** Key capabilities and selling points.
@@ -21,4 +23,5 @@ Please structure the datasheet logically, including standard sections applicable
 *   **Basic Usage / Application Information:** Describe a typical connection diagram, required external components, and provide pseudo-code or steps for initialization, configuration, and data reading.
 *   **Compliance and Certifications:** Include a placeholder section mentioning common standards like RoHS, CE, FCC, noting that specific compliance should be verified with the manufacturer.
 
-Ensure the information provided within each section is as detailed and accurate as your knowledge allows for the specified sensor. Use standard Markdown formatting, including for any tables.
+Ensure the information provided within each section is as detailed and accurate as your knowledge allows for the specified sensor. 
+Use standard Markdown formatting (Without wrapping it in ```md ```), including for any tables.

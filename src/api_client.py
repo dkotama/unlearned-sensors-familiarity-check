@@ -8,6 +8,8 @@ import os
 from datetime import datetime
 from dotenv import load_dotenv
 import google.generativeai as genai
+import time
+import random
 
 # Load environment variables for API keys
 load_dotenv()
@@ -118,7 +120,7 @@ class GeminiClient(APIClient):
     
     def send_request(self, model, prompt):
         """
-        Send a prompt to the specified Gemini model.
+        Send a prompt to the specified Gemini model with retry mechanism.
         
         Args:
             model (str): Model identifier (e.g., "google/gemini-2.5-pro-exp-03-25")
@@ -128,25 +130,32 @@ class GeminiClient(APIClient):
             dict: Response data including text and token counts
             
         Raises:
-            Exception: If the API request fails
+            Exception: If the API request fails after retries
         """
-        try:
-            # Extract the model name after the provider prefix
-            model_name = model.split('/')[-1]
-            gen_model = genai.GenerativeModel(model_name)
-            response = gen_model.generate_content(prompt)
-            
-            # Extract relevant information
-            result = {
-                "text": response.text if hasattr(response, 'text') else response.candidates[0].content.parts[0].text,
-                "input_tokens": response.usage_metadata.prompt_token_count if hasattr(response, 'usage_metadata') else 0,
-                "output_tokens": response.usage_metadata.candidates_token_count if hasattr(response, 'usage_metadata') else 0
-            }
-            
-            return result
-            
-        except Exception as e:
-            raise Exception(f"Gemini API request failed: {str(e)}")
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                # Extract the model name after the provider prefix
+                model_name = model.split('/')[-1]
+                gen_model = genai.GenerativeModel(model_name)
+                response = gen_model.generate_content(prompt)
+                
+                # Extract relevant information
+                result = {
+                    "text": response.text if hasattr(response, 'text') else response.candidates[0].content.parts[0].text,
+                    "input_tokens": response.usage_metadata.prompt_token_count if hasattr(response, 'usage_metadata') else 0,
+                    "output_tokens": response.usage_metadata.candidates_token_count if hasattr(response, 'usage_metadata') else 0
+                }
+                
+                return result
+                
+            except Exception as e:
+                error_msg = f"Gemini API request failed (attempt {attempt+1}/{max_retries}): {str(e)}"
+                if attempt == max_retries - 1:
+                    raise Exception(error_msg)
+                # Exponential backoff with jitter
+                delay = (2 ** attempt) + random.uniform(0, 0.1)
+                time.sleep(delay)
 
 class APIClientFactory:
     @staticmethod

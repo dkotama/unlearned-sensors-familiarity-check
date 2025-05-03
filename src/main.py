@@ -151,18 +151,34 @@ def run(config):
                     
                     console.print(f"[green]✓ Completed {completed}/{total_requests}: {sensor_brand} {sensor_type} with {model_id} (saved to {result_filename})[/green]")
                 except Exception as e:
-                    console.print(f"[red]✗ Error on {completed}/{total_requests}: {sensor_brand} {sensor_type} with {model_id}: {str(e)}[/red]")
+                    error_msg = f"Error on {completed}/{total_requests}: {sensor_brand} {sensor_type} with {model_id}: {str(e)}"
+                    console.print(f"[red]✗ {error_msg}[/red]")
+                    # Log detailed error with traceback to file
+                    import traceback
+                    detailed_error = f"API Error on {completed}/{total_requests}: {sensor_brand} {sensor_type} with {model_id}\n{traceback.format_exc()}"
+                    log_error(detailed_error, cfg.get('logs_path', 'logs/'))
 
             # Check if there are more sensors to process and apply delay if configured
-            if sensor.index < selected_sensors.index[-1]:  # If this is not the last sensor
-                delay_seconds = cfg.get('sensor_delay_seconds', 0)
-                if delay_seconds > 0:
-                    console.print(f"[bold yellow]Waiting {delay_seconds} seconds before processing the next sensor...[/bold yellow]")
-                    for remaining in range(delay_seconds, 0, -1):
-                        console.print(f"[yellow]Countdown: {remaining} seconds remaining...[/yellow]", end='\r')
-                        import time
-                        time.sleep(1)
-                    console.print("")  # New line after countdown
+            # Log types and values for debugging
+            console.print(f"[debug]sensor.index type: {type(sensor.index)}, value: {sensor.index}")
+            console.print(f"[debug]selected_sensors.index[-1] type: {type(selected_sensors.index[-1])}, value: {selected_sensors.index[-1]}")
+            try:
+                # Check if this is not the last sensor by comparing indices
+                is_not_last = sensor.name != selected_sensors.index[-1]
+                if is_not_last:  # If this is not the last sensor
+                    delay_seconds = cfg.get('sensor_delay_seconds', 0)
+                    if delay_seconds > 0:
+                        console.print(f"[bold yellow]Waiting {delay_seconds} seconds before processing the next sensor...[/bold yellow]")
+                        for remaining in range(delay_seconds, 0, -1):
+                            console.print(f"[yellow]Countdown: {remaining} seconds remaining...[/yellow]", end='\r')
+                            import time
+                            time.sleep(1)
+                        console.print("")  # New line after countdown
+            except Exception as e:
+                console.print(f"[red]Error in sensor index comparison: {str(e)}[/red]")
+                log_error(f"Index comparison error: {str(e)}", cfg['logs_path'])
+                # Failsafe: Assume it's not the last sensor to continue processing
+                is_not_last = True
     
     console.print("[bold green]All requests completed![/bold green]")
     
@@ -228,6 +244,13 @@ def convert_to_pdf(cfg):
     
     console.print("[bold green]PDF conversion process completed![/bold green]")
     # The function is already defined and called with cfg, no need to reload config or duplicate code
+
+def log_error(error_msg, logs_path):
+    """Log error message to a file in the specified logs directory."""
+    os.makedirs(logs_path, exist_ok=True)
+    log_file = os.path.join(logs_path, f"error_log_{datetime.now().strftime('%Y%m%d')}.txt")
+    with open(log_file, 'a') as f:
+        f.write(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {error_msg}\n")
 
 if __name__ == '__main__':
     cli()

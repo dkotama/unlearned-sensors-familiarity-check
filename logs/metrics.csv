@@ -10,3 +10,180 @@ Timestamp,SensorBrand,SensorType,Model,ResponseTimeSeconds,InputTokens,OutputTok
 2025-05-03 23:44:29,Stevens,Hydra Probe,meta-llama/llama-3.3-70b-instruct:free,27.158116,576,838,3709
 2025-05-03 23:44:48,Stevens,Hydra Probe,anthropic/claude-3.5-haiku,18.398784,642,883,3489
 2025-05-03 23:45:31,Stevens,Hydra Probe,mistralai/mistral-small-3.1-24b-instruct:free,20.301494,584,1715,7449
+2025-05-04 00:35:23,Stevens,Hydra Probe,openai/chatgpt-4o-latest,26.125023,568,2295,11413
+2025-05-04 00:35:53,Stevens,Hydra Probe,meta-llama/llama-3.3-70b-instruct:free,30.087773,576,919,4571
+2025-05-04 00:36:09,Stevens,Hydra Probe,anthropic/claude-3.5-haiku,15.998286,642,805,3156
+2025-05-04 00:42:24,Decagon,EC-5,openai/chatgpt-4o-latest,26.197492,570,1934,9262
+2025-05-04 00:42:53,Decagon,EC-5,meta-llama/llama-3.3-70b-instruct:free,29.158005,578,820,3817
+2025-05-04 00:43:10,Decagon,EC-5,anthropic/claude-3.5-haiku,16.271122,642,831,3346
+2025-05-04 00:45:10,Decagon,EC-5,google/gemini-2.5-pro-exp-03-25,120.524757,0,0,15977
+2025-05-04 00:45:28,Decagon,EC-5,mistralai/mistral-small-3.1-24b-instruct:free,17.95275,585,1409,6249
+2025-05-04 00:49:45,Stevens,Hydra Probe,anthropic/claude-3.5-haiku,15.942646,642,801,3382
+2025-05-04 00:55:41,Stevens,Hydra Probe,anthropic/claude-3.5-haiku,18.245034,642,943,3669
+2025-05-04 01:02:06,Stevens,Hydra Probe,anthropic/claude-3.5-haiku,16.066812,642,806,3381
+2025-05-04 01:02:24,Stevens,Hydra Probe,google/gemini-2.0-flash,18.186472,0,0,14701
+2025-05-04 01:02:46,Stevens,Hydra Probe,mistralai/mistral-small-3.1-24b-instruct:free,21.77317,584,1599,7573
+2025-05-04 01:06:42,Stevens,Hydra Probe,anthropic/claude-3.5-haiku,19.850827,655,871,3615
+2025-05-04 01:06:59,Stevens,Hydra Probe,google/gemini-2.0-flash,17.130452,0,0,13075
+2025-05-04 01:07:19,Stevens,Hydra Probe,mistralai/mistral-small-3.1-24b-instruct:free,20.822035,596,1778,7661
+2025-05-04 01:08:37,Decagon,EC-5,anthropic/claude-3.5-haiku,16.92926,655,959,3576
+2025-05-04 01:08:48,Decagon,EC-5,google/gemini-2.0-flash,11.642278,0,0,9240
+2025-05-04 01:09:08,Decagon,EC-5,mistralai/mistral-small-3.1-24b-instruct:free,19.88019,597,1429,6689
+2025-05-04 01:13:52,Adafruit,DHT22,openai/chatgpt-4o-latest,23.725948,605,2290,9777
+2025-05-04 01:14:32,Adafruit,DHT22,meta-llama/llama-3.3-70b-instruct:free,39.920137,613,1216,5068
+2025-05-04 01:14:50,Adafruit,DHT22,anthropic/claude-3.5-haiku,18.279143,683,1031,3588
+2025-05-04 01:15:04,Adafruit,DHT22,google/gemini-2.0-flash,14.111482,0,0,9523
+2025-05-04 01:15:30,Adafruit,DHT22,mistralai/mistral-small-3.1-24b-instruct:free,25.941773,624,1486,6867
+2025-05-04 01:48:32,Stevens,Hydra Probe,openai/chatgpt-4o-latest,24.92885,603,2172,11188
+2025-05-04 01:48:47,Stevens,Hydra Probe,meta-llama/llama-3.3-70b-instruct:free,14.90381,610,1070,4696
+2025-05-04 01:49:02,Stevens,Hydra Probe,anthropic/claude-3.5-haiku,15.397061,682,753,3192
+2025-05-04 01:49:18,Stevens,Hydra Probe,google/gemini-2.0-flash,15.330804,0,0,11575
+2025-05-04 01:49:39,Stevens,Hydra Probe,mistralai/mistral-small-3.1-24b-instruct:free,21.51894,622,1447,6651
+2025-05-04 01:51:02,Decagon,EC-5,openai/chatgpt-4o-latest,22.21361,605,2098,10088
+2025-05-04 01:51:29,Decagon,EC-5,meta-llama/llama-3.3-70b-instruct:free,27.090637,613,832,3590
+2025-05-04 01:51:48,Decagon,EC-5,anthropic/claude-3.5-haiku,18.919222,682,992,3621
+2025-05-04 01:51:57,Decagon,EC-5,google/gemini-2.0-flash,9.689595,0,0,7545
+2025-05-04 01:52:18,Decagon,EC-5,mistralai/mistral-small-3.1-24b-instruct:free,20.883817,623,1445,6349
+2025-05-04 01:53:41,Decagon,10HS,openai/chatgpt-4o-latest,22.329887,605,1828,8503
+2025-05-04 01:53:55,Decagon,10HS,meta-llama/llama-3.3-70b-instruct:free,14.213531,612,915,4179
+2025-05-04 01:54:13,Decagon,10HS,anthropic/claude-3.5-haiku,18.27778,683,943,3692
+2025-05-04 01:54:24,Decagon,10HS,google/gemini-2.0-flash,10.831697,0,0,8080
+2025-05-04 01:54:45,Decagon,10HS,mistralai/mistral-small-3.1-24b-instruct:free,21.247874,624,1777,8839
+2025-05-04 01:56:26,Analog Devices,DS18B20,openai/chatgpt-4o-latest,40.245805,606,2439,10462
+2025-05-04 01:57:04,Analog Devices,DS18B20,meta-llama/llama-3.3-70b-instruct:free,38.157361,614,1182,5450
+2025-05-04 01:57:23,Analog Devices,DS18B20,anthropic/claude-3.5-haiku,18.753372,684,1050,3502
+2025-05-04 01:57:40,Analog Devices,DS18B20,google/gemini-2.0-flash,17.532979,0,0,13582
+2025-05-04 01:58:07,Analog Devices,DS18B20,mistralai/mistral-small-3.1-24b-instruct:free,26.850599,626,2111,8259
+2025-05-04 01:59:29,Vishay,NTCLE100E3,openai/chatgpt-4o-latest,21.785977,608,1957,9296
+2025-05-04 02:00:03,Vishay,NTCLE100E3,meta-llama/llama-3.3-70b-instruct:free,33.780264,616,1028,4213
+2025-05-04 02:00:20,Vishay,NTCLE100E3,anthropic/claude-3.5-haiku,17.094097,686,862,3526
+2025-05-04 02:00:33,Vishay,NTCLE100E3,google/gemini-2.0-flash,12.9898,0,0,9722
+2025-05-04 02:00:54,Vishay,NTCLE100E3,mistralai/mistral-small-3.1-24b-instruct:free,20.98669,628,1341,5442
+2025-05-04 02:02:19,Omega,PT100 RTD,openai/chatgpt-4o-latest,24.858001,605,2107,10092
+2025-05-04 02:02:55,Omega,PT100 RTD,meta-llama/llama-3.3-70b-instruct:free,36.391704,613,1118,5457
+2025-05-04 02:03:12,Omega,PT100 RTD,anthropic/claude-3.5-haiku,17.107612,683,890,3358
+2025-05-04 02:03:26,Omega,PT100 RTD,google/gemini-2.0-flash,14.268607,0,0,11168
+2025-05-04 02:03:46,Omega,PT100 RTD,mistralai/mistral-small-3.1-24b-instruct:free,19.76532,625,1371,6352
+2025-05-04 02:05:05,Aosong,DHT22,openai/chatgpt-4o-latest,18.863694,605,1819,8188
+2025-05-04 02:05:38,Aosong,DHT22,meta-llama/llama-3.3-70b-instruct:free,33.264098,613,1138,5178
+2025-05-04 02:06:00,Aosong,DHT22,anthropic/claude-3.5-haiku,21.28201,683,1149,4010
+2025-05-04 02:06:12,Aosong,DHT22,google/gemini-2.0-flash,12.083123,0,0,8310
+2025-05-04 02:06:33,Aosong,DHT22,mistralai/mistral-small-3.1-24b-instruct:free,21.602841,625,1820,7150
+2025-05-04 02:07:59,Honeywell,HIH Series,openai/chatgpt-4o-latest,25.178853,605,2473,10053
+2025-05-04 02:08:29,Honeywell,HIH Series,meta-llama/llama-3.3-70b-instruct:free,30.593788,613,924,4117
+2025-05-04 02:08:49,Honeywell,HIH Series,anthropic/claude-3.5-haiku,19.750412,683,1052,4019
+2025-05-04 02:09:06,Honeywell,HIH Series,google/gemini-2.0-flash,17.225032,0,0,13308
+2025-05-04 02:09:30,Honeywell,HIH Series,mistralai/mistral-small-3.1-24b-instruct:free,23.690401,623,1581,6668
+2025-05-04 02:10:55,Sensirion,SHT31,openai/chatgpt-4o-latest,25.108854,606,2386,10309
+2025-05-04 02:11:27,Sensirion,SHT31,meta-llama/llama-3.3-70b-instruct:free,31.984597,614,990,4121
+2025-05-04 02:11:45,Sensirion,SHT31,anthropic/claude-3.5-haiku,18.064361,684,1005,3555
+2025-05-04 02:12:00,Sensirion,SHT31,google/gemini-2.0-flash,14.522074,0,0,10224
+2025-05-04 02:12:32,Sensirion,SHT31,mistralai/mistral-small-3.1-24b-instruct:free,32.148362,625,2157,8870
+2025-05-04 02:13:54,Cordulus,Tipping Bucket Rain Gauge,openai/chatgpt-4o-latest,21.909922,607,1905,9423
+2025-05-04 02:14:14,Cordulus,Tipping Bucket Rain Gauge,meta-llama/llama-3.3-70b-instruct:free,20.038078,614,919,4377
+2025-05-04 02:14:35,Cordulus,Tipping Bucket Rain Gauge,anthropic/claude-3.5-haiku,20.65469,687,880,3594
+2025-05-04 02:14:48,Cordulus,Tipping Bucket Rain Gauge,google/gemini-2.0-flash,13.728346,0,0,10549
+2025-05-04 02:15:17,Cordulus,Tipping Bucket Rain Gauge,mistralai/mistral-small-3.1-24b-instruct:free,28.206536,627,1443,6344
+2025-05-04 02:16:35,R.M. Young,Tipping Bucket Rain Gauge,openai/chatgpt-4o-latest,17.947348,609,1816,9081
+2025-05-04 02:17:07,R.M. Young,Tipping Bucket Rain Gauge,meta-llama/llama-3.3-70b-instruct:free,32.440231,617,1010,4719
+2025-05-04 02:17:26,R.M. Young,Tipping Bucket Rain Gauge,anthropic/claude-3.5-haiku,19.078955,689,878,3715
+2025-05-04 02:17:38,R.M. Young,Tipping Bucket Rain Gauge,google/gemini-2.0-flash,11.513304,0,0,8505
+2025-05-04 02:17:55,R.M. Young,Tipping Bucket Rain Gauge,mistralai/mistral-small-3.1-24b-instruct:free,17.063934,629,1379,5572
+2025-05-04 02:19:13,Texas Electronics,TR-525USW,openai/chatgpt-4o-latest,18.412742,607,1836,8498
+2025-05-04 02:19:35,Texas Electronics,TR-525USW,meta-llama/llama-3.3-70b-instruct:free,21.522758,614,931,3972
+2025-05-04 02:19:51,Texas Electronics,TR-525USW,anthropic/claude-3.5-haiku,16.396498,683,872,3405
+2025-05-04 02:20:02,Texas Electronics,TR-525USW,google/gemini-2.0-flash,11.016497,0,0,8713
+2025-05-04 02:20:27,Texas Electronics,TR-525USW,mistralai/mistral-small-3.1-24b-instruct:free,25.010824,627,2125,8235
+2025-05-04 02:21:51,Davis Instruments,Wind Speed Sensor,openai/chatgpt-4o-latest,23.224686,605,1985,9544
+2025-05-04 02:22:20,Davis Instruments,Wind Speed Sensor,meta-llama/llama-3.3-70b-instruct:free,29.405256,613,907,4526
+2025-05-04 02:22:37,Davis Instruments,Wind Speed Sensor,anthropic/claude-3.5-haiku,17.371448,683,831,3337
+2025-05-04 02:22:52,Davis Instruments,Wind Speed Sensor,google/gemini-2.0-flash,14.580633,0,0,11201
+2025-05-04 02:23:13,Davis Instruments,Wind Speed Sensor,mistralai/mistral-small-3.1-24b-instruct:free,20.475561,623,1428,6297
+2025-05-04 02:24:32,Rika Sensor,RK100-01,openai/chatgpt-4o-latest,19.682041,607,1614,8607
+2025-05-04 02:24:46,Rika Sensor,RK100-01,meta-llama/llama-3.3-70b-instruct:free,13.687999,614,947,4266
+2025-05-04 02:25:04,Rika Sensor,RK100-01,anthropic/claude-3.5-haiku,17.893086,686,997,3859
+2025-05-04 02:25:21,Rika Sensor,RK100-01,google/gemini-2.0-flash,16.601911,0,0,12011
+2025-05-04 02:25:47,Rika Sensor,RK100-01,mistralai/mistral-small-3.1-24b-instruct:free,26.385169,628,1920,7923
+2025-05-04 02:27:08,Campbell Scientific,05103 Wind Monitor,openai/chatgpt-4o-latest,20.54882,607,2009,9717
+2025-05-04 02:27:39,Campbell Scientific,05103 Wind Monitor,meta-llama/llama-3.3-70b-instruct:free,30.983038,615,970,4791
+2025-05-04 02:27:57,Campbell Scientific,05103 Wind Monitor,anthropic/claude-3.5-haiku,18.68142,684,949,3988
+2025-05-04 02:28:10,Campbell Scientific,05103 Wind Monitor,google/gemini-2.0-flash,12.293878,0,0,8940
+2025-05-04 02:28:27,Campbell Scientific,05103 Wind Monitor,mistralai/mistral-small-3.1-24b-instruct:free,17.172084,628,1368,5901
+2025-05-04 02:29:50,Topcon,CropSpec,openai/chatgpt-4o-latest,23.440576,604,2044,9771
+2025-05-04 02:30:19,Topcon,CropSpec,meta-llama/llama-3.3-70b-instruct:free,28.549241,612,888,4198
+2025-05-04 02:30:40,Topcon,CropSpec,anthropic/claude-3.5-haiku,20.916518,682,955,3681
+2025-05-04 02:30:51,Topcon,CropSpec,google/gemini-2.0-flash,11.064244,0,0,8245
+2025-05-04 02:31:19,Topcon,CropSpec,mistralai/mistral-small-3.1-24b-instruct:free,28.237366,623,1962,9038
+2025-05-04 02:32:39,Trimble,GreenSeeker,openai/chatgpt-4o-latest,19.935637,605,1980,9588
+2025-05-04 02:33:02,Trimble,GreenSeeker,meta-llama/llama-3.3-70b-instruct:free,22.673756,612,1388,7484
+2025-05-04 02:33:20,Trimble,GreenSeeker,anthropic/claude-3.5-haiku,17.978238,683,895,3611
+2025-05-04 02:33:31,Trimble,GreenSeeker,google/gemini-2.0-flash,11.021025,0,0,9622
+2025-05-04 02:33:47,Trimble,GreenSeeker,mistralai/mistral-small-3.1-24b-instruct:free,16.02194,623,1308,5588
+2025-05-04 02:35:10,Holland Scientific,ACS-211,openai/chatgpt-4o-latest,22.541009,605,2128,10216
+2025-05-04 02:35:40,Holland Scientific,ACS-211,meta-llama/llama-3.3-70b-instruct:free,30.096953,613,924,4699
+2025-05-04 02:35:59,Holland Scientific,ACS-211,anthropic/claude-3.5-haiku,19.063515,682,919,3567
+2025-05-04 02:36:13,Holland Scientific,ACS-211,google/gemini-2.0-flash,14.039558,0,0,11260
+2025-05-04 02:36:37,Holland Scientific,ACS-211,mistralai/mistral-small-3.1-24b-instruct:free,24.423521,625,1418,6752
+2025-05-04 02:37:58,Sensorex,S175CD/BNC,openai/chatgpt-4o-latest,21.175043,608,1940,9696
+2025-05-04 02:38:35,Sensorex,S175CD/BNC,meta-llama/llama-3.3-70b-instruct:free,36.481386,615,1083,5498
+2025-05-04 02:38:53,Sensorex,S175CD/BNC,anthropic/claude-3.5-haiku,18.036852,686,867,3449
+2025-05-04 02:39:05,Sensorex,S175CD/BNC,google/gemini-2.0-flash,12.190329,0,0,9365
+2025-05-04 02:39:23,Sensorex,S175CD/BNC,mistralai/mistral-small-3.1-24b-instruct:free,17.728606,628,1421,6111
+2025-05-04 02:40:50,Rakwireless,Soil pH Sensor,openai/chatgpt-4o-latest,27.125792,607,2178,10626
+2025-05-04 02:41:24,Rakwireless,Soil pH Sensor,meta-llama/llama-3.3-70b-instruct:free,33.942764,614,1031,4406
+2025-05-04 02:41:44,Rakwireless,Soil pH Sensor,anthropic/claude-3.5-haiku,19.777013,686,1032,3757
+2025-05-04 02:41:55,Rakwireless,Soil pH Sensor,google/gemini-2.0-flash,11.008711,0,0,6986
+2025-05-04 02:42:15,Rakwireless,Soil pH Sensor,mistralai/mistral-small-3.1-24b-instruct:free,20.50282,625,1675,6812
+2025-05-04 02:43:36,DFRobot,Soil pH Sensor,openai/chatgpt-4o-latest,20.446247,607,2027,9705
+2025-05-04 02:43:56,DFRobot,Soil pH Sensor,meta-llama/llama-3.3-70b-instruct:free,19.870463,613,1094,4903
+2025-05-04 02:44:14,DFRobot,Soil pH Sensor,anthropic/claude-3.5-haiku,18.270522,686,1027,3632
+2025-05-04 02:44:25,DFRobot,Soil pH Sensor,google/gemini-2.0-flash,10.678061,0,0,7815
+2025-05-04 02:44:46,DFRobot,Soil pH Sensor,mistralai/mistral-small-3.1-24b-instruct:free,21.567785,624,1421,6025
+2025-05-04 02:46:08,Renke,Soil NPK Sensor,openai/chatgpt-4o-latest,21.729017,606,2156,9184
+2025-05-04 02:46:24,Renke,Soil NPK Sensor,meta-llama/llama-3.3-70b-instruct:free,15.247864,613,1094,4989
+2025-05-04 02:46:43,Renke,Soil NPK Sensor,anthropic/claude-3.5-haiku,19.455914,685,1107,4094
+2025-05-04 02:47:00,Renke,Soil NPK Sensor,google/gemini-2.0-flash,16.945554,0,0,12415
+2025-05-04 02:47:19,Renke,Soil NPK Sensor,mistralai/mistral-small-3.1-24b-instruct:free,19.341948,624,1603,7586
+2025-05-04 02:48:55,Spectrum Technologies,Soil Nutrient Sensor,openai/chatgpt-4o-latest,35.272298,606,2115,9517
+2025-05-04 02:49:17,Spectrum Technologies,Soil Nutrient Sensor,meta-llama/llama-3.3-70b-instruct:free,22.063806,613,1466,6269
+2025-05-04 02:49:36,Spectrum Technologies,Soil Nutrient Sensor,anthropic/claude-3.5-haiku,18.950834,686,945,3613
+2025-05-04 02:49:54,Spectrum Technologies,Soil Nutrient Sensor,google/gemini-2.0-flash,17.91784,0,0,13414
+2025-05-04 02:50:25,Spectrum Technologies,Soil Nutrient Sensor,mistralai/mistral-small-3.1-24b-instruct:free,31.133626,624,1753,7559
+2025-05-04 02:51:49,Delta-T Devices,WET150,openai/chatgpt-4o-latest,24.340548,606,2179,10280
+2025-05-04 02:52:19,Delta-T Devices,WET150,meta-llama/llama-3.3-70b-instruct:free,29.255018,614,883,4481
+2025-05-04 02:52:35,Delta-T Devices,WET150,anthropic/claude-3.5-haiku,16.599213,684,895,3561
+2025-05-04 02:52:50,Delta-T Devices,WET150,google/gemini-2.0-flash,14.679529,0,0,10618
+2025-05-04 02:53:13,Delta-T Devices,WET150,mistralai/mistral-small-3.1-24b-instruct:free,22.771946,626,1504,7078
+2025-05-04 02:54:34,Rika Sensor,RK200-03,openai/chatgpt-4o-latest,21.634477,607,2107,9281
+2025-05-04 02:55:03,Rika Sensor,RK200-03,meta-llama/llama-3.3-70b-instruct:free,28.404144,615,880,3976
+2025-05-04 02:55:21,Rika Sensor,RK200-03,anthropic/claude-3.5-haiku,17.696469,686,960,3748
+2025-05-04 02:55:36,Rika Sensor,RK200-03,google/gemini-2.0-flash,15.23263,0,0,11321
+2025-05-04 02:56:01,Rika Sensor,RK200-03,mistralai/mistral-small-3.1-24b-instruct:free,25.440173,628,1781,7519
+2025-05-04 02:57:20,Trimble,GreenSeeker,openai/chatgpt-4o-latest,18.778714,605,1892,9074
+2025-05-04 02:57:56,Trimble,GreenSeeker,meta-llama/llama-3.3-70b-instruct:free,36.245948,613,1042,4683
+2025-05-04 02:58:14,Trimble,GreenSeeker,anthropic/claude-3.5-haiku,17.78047,683,818,3459
+2025-05-04 03:01:34,Trimble,GreenSeeker,openai/chatgpt-4o-latest,20.671644,605,1982,10426
+2025-05-04 03:01:47,Trimble,GreenSeeker,meta-llama/llama-3.3-70b-instruct:free,13.337106,612,1006,4794
+2025-05-04 03:02:05,Trimble,GreenSeeker,anthropic/claude-3.5-haiku,18.088589,683,939,3732
+2025-05-04 03:02:17,Trimble,GreenSeeker,google/gemini-2.0-flash,11.880028,0,0,8137
+2025-05-04 03:02:41,Trimble,GreenSeeker,mistralai/mistral-small-3.1-24b-instruct:free,24.288037,623,1371,6747
+2025-05-04 03:04:03,Holland Scientific,ACS-435,openai/chatgpt-4o-latest,21.469713,605,2059,10133
+2025-05-04 03:04:39,Holland Scientific,ACS-435,meta-llama/llama-3.3-70b-instruct:free,36.489456,613,1059,4694
+2025-05-04 03:04:59,Holland Scientific,ACS-435,anthropic/claude-3.5-haiku,19.663034,682,998,4083
+2025-05-04 03:05:14,Holland Scientific,ACS-435,google/gemini-2.0-flash,14.406521,0,0,12295
+2025-05-04 03:05:47,Holland Scientific,ACS-435,mistralai/mistral-small-3.1-24b-instruct:free,33.896314,625,1972,8334
+2025-05-04 03:07:11,Adafruit,DHT22,openai/chatgpt-4o-latest,23.879433,605,2156,9770
+2025-05-04 03:07:38,Adafruit,DHT22,meta-llama/llama-3.3-70b-instruct:free,26.707933,612,1399,5837
+2025-05-04 03:07:59,Adafruit,DHT22,anthropic/claude-3.5-haiku,20.601148,683,1170,3978
+2025-05-04 03:08:13,Adafruit,DHT22,google/gemini-2.0-flash,14.237891,0,0,8874
+2025-05-04 03:08:34,Adafruit,DHT22,mistralai/mistral-small-3.1-24b-instruct:free,20.659459,624,1518,6183
+2025-05-04 03:10:00,SparkFun,DS18B20,openai/chatgpt-4o-latest,26.537061,606,2626,11307
+2025-05-04 03:10:36,SparkFun,DS18B20,meta-llama/llama-3.3-70b-instruct:free,35.6545,614,1115,4718
+2025-05-04 03:10:57,SparkFun,DS18B20,anthropic/claude-3.5-haiku,20.706869,684,1120,3826
+2025-05-04 03:11:13,SparkFun,DS18B20,google/gemini-2.0-flash,16.556746,0,0,11131
+2025-05-04 03:11:30,SparkFun,DS18B20,mistralai/mistral-small-3.1-24b-instruct:free,17.150877,626,1384,5585
+2025-05-04 03:12:58,Bosch,BME280,openai/chatgpt-4o-latest,27.136435,604,2273,9158
+2025-05-04 03:13:38,Bosch,BME280,meta-llama/llama-3.3-70b-instruct:free,40.69817,612,1272,5056
+2025-05-04 03:13:57,Bosch,BME280,anthropic/claude-3.5-haiku,18.775573,682,1087,3722
+2025-05-04 03:14:14,Bosch,BME280,google/gemini-2.0-flash,16.723386,0,0,11637
+2025-05-04 03:14:45,Bosch,BME280,mistralai/mistral-small-3.1-24b-instruct:free,31.457993,624,2281,10403
