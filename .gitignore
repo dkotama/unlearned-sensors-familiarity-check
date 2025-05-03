@@ -126,3 +126,9 @@ dmypy.json
 .pyre/
 # Configuration files
 config/config.yaml
+config/config.yml
+
+#Generated Files
+pdf/*
+results/*
+logs/*

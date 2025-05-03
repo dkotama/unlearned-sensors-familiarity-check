@@ -20,7 +20,7 @@ The current application uses the OpenRouter API to communicate with various LLMs
 # API Keys and Provider Configurations
 providers:
   openrouter:
-    api_key: "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"
+    api_key: "sk-or-v1-"
     base_url: "https://openrouter.ai/api/v1"
     timeout: 60
   google_gemini:

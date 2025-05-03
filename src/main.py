@@ -152,6 +152,17 @@ def run(config):
                     console.print(f"[green]✓ Completed {completed}/{total_requests}: {sensor_brand} {sensor_type} with {model_id} (saved to {result_filename})[/green]")
                 except Exception as e:
                     console.print(f"[red]✗ Error on {completed}/{total_requests}: {sensor_brand} {sensor_type} with {model_id}: {str(e)}[/red]")
+
+            # Check if there are more sensors to process and apply delay if configured
+            if sensor.index < selected_sensors.index[-1]:  # If this is not the last sensor
+                delay_seconds = cfg.get('sensor_delay_seconds', 0)
+                if delay_seconds > 0:
+                    console.print(f"[bold yellow]Waiting {delay_seconds} seconds before processing the next sensor...[/bold yellow]")
+                    for remaining in range(delay_seconds, 0, -1):
+                        console.print(f"[yellow]Countdown: {remaining} seconds remaining...[/yellow]", end='\r')
+                        import time
+                        time.sleep(1)
+                    console.print("")  # New line after countdown
     
     console.print("[bold green]All requests completed![/bold green]")
     

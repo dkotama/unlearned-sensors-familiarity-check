@@ -102,17 +102,17 @@ class OpenRouterClient(APIClient):
             raise Exception(error_msg)
 
 class GeminiClient(APIClient):
-    def __init__(self, api_key_env, timeout=120):
+    def __init__(self, api_key, timeout=120):
         """
         Initialize the Gemini client.
         
         Args:
-            api_key_env (str): Environment variable name for Gemini API key
+            api_key (str): Direct API key for Gemini
             timeout (int): Request timeout in seconds
         """
-        self.api_key = os.getenv(api_key_env)
+        self.api_key = api_key
         if not self.api_key:
-            raise Exception(f"Gemini API key not found in environment variable {api_key_env}")
+            raise Exception("Gemini API key is not provided in configuration")
         self.timeout = timeout
         genai.configure(api_key=self.api_key)
     
@@ -169,7 +169,7 @@ class APIClientFactory:
             )
         elif provider_name == "google_gemini":
             return GeminiClient(
-                provider_config['api_key_env'],
+                provider_config['api_key'],
                 provider_config.get('timeout', 120)
             )
         else:
