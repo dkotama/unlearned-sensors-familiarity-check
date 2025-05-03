@@ -1,4 +1,31 @@
-Brand,Type,DatasheetPath
+Brand,Type,DatasheetPath,Domain
+Stevens,Hydra Probe,https://stevenswater.com/resources/datasheets/HydraProbe_Manual.pdf,Soil Moisture
+Decagon,EC-5,https://www.metergroup.com/environment/products/ec-5-soil-moisture-sensor/,Soil Moisture
+Decagon,10HS,https://www.metergroup.com/environment/products/10hs-soil-moisture-sensor/,Soil Moisture
+Analog Devices,DS18B20,https://www.analog.com/media/en/technical-documentation/data-sheets/DS18B20.pdf,Temperature
+Vishay,NTCLE100E3,https://www.vishay.com/docs/29049/ntcle100.pdf,Temperature
+Omega,PT100 RTD,https://www.omega.com/en-us/resources/rtd-technical-data,Temperature
+Aosong,DHT22,https://cdn.sparkfun.com/datasheets/Sensors/Weather/DHT22.pdf,Humidity
+Honeywell,HIH Series,https://sensing.honeywell.com/honeywell-sensing-hih-series-humidity-sensors-product-sheet.pdf,Humidity
+Sensirion,SHT31,https://www.sensirion.com/media/datasheets/SHT3x_Datasheet_digital.pdf,Humidity
+Cordulus,Tipping Bucket Rain Gauge,https://cordulus.com/products/rain-gauge,Rainfall
+R.M. Young,Tipping Bucket Rain Gauge,https://www.youngusa.com/product/tipping-bucket-rain-gauge/,Rainfall
+Texas Electronics,TR-525USW,https://texaselectronics.com/pdf/TR-525USW.pdf,Rainfall
+Davis Instruments,Wind Speed Sensor,https://www.davisinstruments.com/products/anemometer-for-vantage-pro2/,Wind Speed
+Rika Sensor,RK100-01,https://www.esis.com.au/datasheets/RK100-01_Wind_Speed_Sensor.pdf,Wind Speed
+Campbell Scientific,05103 Wind Monitor,https://s.campbellsci.com/documents/us/manuals/05103.pdf,Wind Speed
+Topcon,CropSpec,https://www.topconpositioning.com/support/products/cropspec,Crop Health
+Trimble,GreenSeeker,https://agriculture.trimble.com/wp-content/uploads/2017/12/GreenSeeker_Handheld_Datasheet.pdf,Crop Health
+Holland Scientific,ACS-211,https://hollandscientific.com/product/active-canopy-sensor-acs-211/,Crop Health
+Sensorex,S175CD/BNC,https://sensorex.com/products/s175cd-bnc-soil-ph-sensor/,Soil pH
+Rakwireless,Soil pH Sensor,https://docs.rakwireless.com/Product-Categories/WisBlock/RAK12023/Datasheet/,Soil pH
+DFRobot,Soil pH Sensor,https://www.dfrobot.com/product-2066.html,Soil pH
+Renke,Soil NPK Sensor,https://www.renkeer.com/product/soil-npk-sensor/,Soil Nutrients
+Spectrum Technologies,Soil Nutrient Sensor,https://www.specmeters.com/soil-and-water/soil-test-kits/,Soil Nutrients
+Delta-T Devices,WET150,https://delta-t.co.uk/product/wet150/,Soil Nutrients
+Rika Sensor,RK200-03,https://www.rikasensor.com/rk200-03-pyranometer-solar-radiation-sensor.html,Light
+Trimble,GreenSeeker,https://agriculture.trimble.com/wp-content/uploads/2017/12/GreenSeeker_Handheld_Datasheet.pdf,Light
+Holland Scientific,ACS-435,https://hollandscientific.com/product/crop-circle-acs-435/,Light
 Adafruit,DHT22,data/datasheets/DHT22.md
 SparkFun,DS18B20,data/datasheets/DS18B20.md
 Bosch,BME280,data/datasheets/BME280.md

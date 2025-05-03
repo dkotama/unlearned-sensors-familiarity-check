@@ -5,3 +5,8 @@ Timestamp,SensorBrand,SensorType,Model,ResponseTimeSeconds,InputTokens,OutputTok
 2025-04-27 00:28:31,Adafruit,DHT22,anthropic/claude-3.5-sonnet,21.169813,643,1204,4100
 2025-04-27 00:29:25,Adafruit,DHT22,anthropic/claude-3-opus,54.055119,643,1496,4969
 2025-04-27 00:29:30,Adafruit,DHT22,google/gemini-flash-1.5-8b,5.363977,586,1005,4287
+2025-05-03 21:39:00,Adafruit,DHT22,meta-llama/llama-3.3-70b-instruct:free,24.907645,577,1081,4430
+2025-05-03 23:44:02,Stevens,Hydra Probe,openai/chatgpt-4o-latest,22.550885,568,2163,10528
+2025-05-03 23:44:29,Stevens,Hydra Probe,meta-llama/llama-3.3-70b-instruct:free,27.158116,576,838,3709
+2025-05-03 23:44:48,Stevens,Hydra Probe,anthropic/claude-3.5-haiku,18.398784,642,883,3489
+2025-05-03 23:45:31,Stevens,Hydra Probe,mistralai/mistral-small-3.1-24b-instruct:free,20.301494,584,1715,7449
