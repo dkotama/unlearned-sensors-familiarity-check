@@ -132,3 +132,4 @@ config/config.yml
 pdf/*
 results/*
 logs/*
+logs/metrics.csv

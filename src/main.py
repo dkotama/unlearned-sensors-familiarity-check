@@ -5,7 +5,15 @@ This CLI tool allows users to compare responses from different LLMs about sensor
 """
 
 import click
-import pandas as pd
+# Code block removed due to import order error
+try:
+    import pandas as pd
+except Exception as e:
+    import logging
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger(__name__)
+    logger.error(f"Error importing pandas: {str(e)}")
+    raise
 import yaml
 from rich.console import Console
 from rich.table import Table
@@ -13,6 +21,15 @@ import os
 import sys
 from datetime import datetime
 
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+logger.info(f"Python version: {sys.version}")
+try:
+    import numpy as np
+    logger.info(f"NumPy version: {np.__version__}")
+except ImportError as e:
+    logger.error(f"NumPy import error: {e}")
 # Add the parent directory to sys.path to import other modules
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -59,7 +76,8 @@ def cli():
 
 @cli.command()
 @click.option('--config', default='config/config.yaml', help='Path to configuration file')
-def run(config):
+@click.option('--convert-pdf', is_flag=True, help='Convert the last generated output to PDF after comparison')
+def run(config, convert_pdf):
     """Run the comparison tool with interactive selection."""
     # Load configuration
     cfg = load_config(config)
@@ -183,8 +201,10 @@ def run(config):
     console.print("[bold green]All requests completed![/bold green]")
     
     # Start PDF conversion process for generated .md files
+    logger.info("PDF conversion is about to start for all files.")
     console.print("[bold blue]Starting PDF conversion of .md files using pandoc...[/bold blue]")
-    convert_to_pdf(cfg)
+    if convert_pdf:
+        convert_to_pdf(cfg, convert_last_only=True)
 
 @cli.command()
 @click.option('--config', default='config/config.yaml', help='Path to configuration file')
@@ -194,7 +214,7 @@ def convert_pdf(config):
     console.print("[bold blue]Starting manual PDF conversion of .md files...[/bold blue]")
     convert_to_pdf(cfg)
 
-def convert_to_pdf(cfg):
+def convert_to_pdf(cfg, convert_last_only=False):
     """Convert .md files to PDF using pandoc."""
     import subprocess
     import glob
@@ -206,7 +226,16 @@ def convert_to_pdf(cfg):
     os.makedirs(pdf_base_path, exist_ok=True)
     
     # Find all .md files in results directory and subdirectories
-    md_files = glob.glob(os.path.join(results_path, '**', '*.md'), recursive=True)
+    logger.info(f"Searching for .md files in {results_path}")
+    if convert_last_only:
+        all_md_files = glob.glob(os.path.join(results_path, '**', '*.md'), recursive=True)
+        if all_md_files:
+            latest_file = max(all_md_files, key=os.path.getmtime)
+            md_files = [latest_file]
+        else:
+            md_files = []
+    else:
+        md_files = glob.glob(os.path.join(results_path, '**', '*.md'), recursive=True)
     total_files = len(md_files)
     converted = 0
     
