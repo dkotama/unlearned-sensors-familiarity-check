@@ -15,18 +15,16 @@ This document outlines the specification for a new feature that enables the comp
 
 ## 3. Proposed Implementation Steps
 
-### Step 1: Official Datasheet Collector/Accessor
+### Step 1: Official Datasheet Loader
 
-*   **Objective:** To obtain official datasheets for the sensors listed in `data/sensors.csv`.
+*   **Objective:** To load official datasheets for the sensors listed in `data/sensors.csv`.
 *   **Details:**
-    *   A column, `DatasheetPath` exist on `data/sensors.csv`. This column will contain a direct URL to the official PDF/text datasheet or a local file path.
-    *   A new module/class (e.g., `OfficialDatasheetFetcher` in `src/datasheet_fetcher.py`) will be responsible for:
-        *   Reading the URL/path from `sensors.csv`.
-        *   If it's a URL, downloading the datasheet.
-        *   If it's a local path, accessing the file.
-        *   Extracting text content from the datasheet (e.g., from PDF or text files). This might require libraries like `PyPDF2` or `pdfminer.six` for PDFs.
-    *   Downloaded and processed official datasheets will be stored in a dedicated directory, e.g., `data/official_datasheets/`, named consistently (e.g., `[Brand]_[Type].pdf` or `[Brand]_[Type].txt`). This module should handle the renaming and caching.
-    *   Error handling for unavailable datasheets (e.g., broken links, unsupported formats) must be implemented. A status (e.g., "Official Datasheet Not Found") should be logged.
+    *   A new module/class (e.g., `OfficialDatasheetLoader` in `src/datasheet_loader.py`) will be responsible for:
+        *   Reading the sensor information from `data/sensors.csv`, specifically the `Brand` and `Sensor` columns.
+        *   Constructing the official datasheet filename in the format `[Brand]_[Sensor].md`.
+        *   Loading the content of the official datasheet from the `datasheet` directory.
+        *   Error handling for missing datasheets must be implemented. A status (e.g., "Official Datasheet Not Found") should be logged.
+    *   The official datasheets are expected to be in Markdown format and stored in the `datasheet` directory.
 
 ### Step 2: LLM Reviewer Implementation
 
@@ -118,7 +116,7 @@ This document outlines the specification for a new feature that enables the comp
         *   Select the LLM model to act as the reviewer (from `config.yaml`).
         *   Optionally, specify filters for which generated datasheets to review (e.g., by original generator LLM, by sensor). Default to reviewing all available generated datasheets for which official datasheets can be found.
         *   Trigger the review and scoring process.
-    *   The command will utilize the `OfficialDatasheetFetcher`, `APIClient`, and `ReviewScoreLogger` components.
+    *   The command will utilize the `OfficialDatasheetLoader`, `APIClient`, and `ReviewScoreLogger` components.
 
 ## 5. Error Handling and Logging
 
