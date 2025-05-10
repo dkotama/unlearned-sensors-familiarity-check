@@ -21,27 +21,32 @@ from rich.table import Table
 from rich.progress import Progress, BarColumn, TextColumn, SpinnerColumn
 from rich.spinner import Spinner
 
-# Import our new utils module with the improved JSON parser
-from src.utils import extract_json_from_llm_response
-
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
-# Other imports
-try:
-    import numpy as np
-    logger.info(f"NumPy version: {np.__version__}")
-except ImportError as e:
-    logger.error(f"NumPy import error: {e}")
-# Add the parent directory to sys.path to import other modules
+# Add the parent directory to sys.path to resolve the import issue
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+# Configure more detailed logging
+logging.basicConfig(
+    level=logging.DEBUG,  # Changed from INFO to DEBUG
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(),  # Output to console
+        logging.FileHandler(os.path.join('logs', f'chunked_review_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log'))
+    ]
+)
+
+# Import our utility modules
+from src.utils import extract_json_from_llm_response
+from src.chunked_reviewer import ChunkedReviewer
 from src.api_client import APIClientFactory
 from src.prompt_generator import PromptGenerator
 from src.result_processor import ResultProcessor
 from src.metrics_logger import MetricsLogger
 from src.datasheet_loader import OfficialDatasheetLoader
 from src.review_logger import ReviewScoreLogger
+
+logger = logging.getLogger(__name__)
+logger.info(f"NumPy version: {__import__('numpy').__version__}")
+logger.info("Starting application")
 
 console = Console()
 
@@ -162,8 +167,8 @@ def create_api_client(model_id: str, cfg: dict, purpose: str = "generator"):
     if 'api_key' not in actual_provider_config or not actual_provider_config['api_key']:
         raise ValueError(f"API key for provider '{provider_name}' (required by model '{model_id}') is missing or empty. Please check 'providers.{provider_name}.api_key' in your config.")
 
-    # APIClientFactory is imported at the top of src/main.py
-    return APIClientFactory.get_client(actual_provider_config, provider_name)
+    # Pass the full config to the API client factory for rate limiting
+    return APIClientFactory.get_client(actual_provider_config, provider_name, cfg)
 @click.group()
 def cli():
     """LLM Sensor Knowledge Comparison Tool"""
@@ -686,7 +691,11 @@ def review(config, reviewer, sensor):
 
             full_review_prompt = review_prompt_template.replace("{{OFFICIAL_DATASHEET_CONTENT}}", official_datasheet_content)
             full_review_prompt = full_review_prompt.replace("{{GENERATED_DATASHEET_CONTENT}}", generated_datasheet_content)
-
+            
+            # Add these lines to replace the sensor brand and model placeholders
+            full_review_prompt = full_review_prompt.replace("{{SENSOR_BRAND}}", current_brand)
+            full_review_prompt = full_review_prompt.replace("{{SENSOR_MODEL}}", current_sensor_type)
+            
             review_response_json_str = None
             review_response_data = {}
             try:
@@ -839,5 +848,293 @@ def review(config, reviewer, sensor):
     console.print("\n[bold green]Review process completed for all selected sensors and models.[/bold green]")
     logger.info("Review process finished.")
 
-if __name__ == '__main__':
+@cli.command()
+@click.option('--config', default='config/config.yaml', help='Path to configuration file')
+@click.option('--reviewer', help="Specific reviewer model to use. If omitted, you'll be prompted to select from available models.")
+@click.option('--sensor', help="Sensor to review (Brand_Type format). If omitted, you'll be prompted to select from a list (supports 'all').")
+def chunked_review(config, reviewer, sensor):
+    """Review sensor datasheets by breaking the task into smaller chunks.
+    This command handles large datasheets without hitting API token limits by processing reviews in 3 chunks.
+    """
+    try:
+        logger.info("Starting chunked_review command")
+        # Create logs directory if it doesn't exist
+        os.makedirs('logs', exist_ok=True)
+        
+        # Start a debug log file for this command
+        debug_log_path = os.path.join('logs', f'chunked_review_debug_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log')
+        debug_handler = logging.FileHandler(debug_log_path)
+        debug_handler.setLevel(logging.DEBUG)
+        debug_handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+        logger.addHandler(debug_handler)
+        
+        logger.debug("Added debug file handler")
+        
+        # Load configuration
+        logger.debug(f"Loading config from {config}")
+        cfg = load_config(config)
+        logger.debug("Config loaded successfully")
+        
+        # Load sensor data for selection
+        logger.debug(f"Loading sensor data from {cfg.get('data_path')}")
+        sensors_df = pd.read_csv(cfg['data_path'])
+        logger.debug(f"Loaded {len(sensors_df)} sensors from CSV")
+
+        if sensor is None:
+            logger.debug("No sensor provided via CLI, prompting for selection")
+            console.print("[bold blue]Select a sensor to review:[/bold blue]")
+            display_sensors(sensors_df)
+            
+            # Interactive selection code...
+            while True:
+                try:
+                    sensor_choice_str = click.prompt("Enter the number for the sensor (0 for All Sensors)", type=str)
+                    sensor_choice = int(sensor_choice_str)
+                    
+                    if sensor_choice == 0:
+                        sensor = "ALL_SENSORS" # Special value for all sensors
+                        console.print(f"Selected: [bold cyan]All Sensors[/bold cyan]")
+                        break
+                    # Adjust for 1-based indexing for specific sensors (user inputs 1, df index is 0)
+                    elif 1 <= sensor_choice <= len(sensors_df):
+                        # Convert 1-based input to 0-based DataFrame index
+                        selected_sensor_row = sensors_df.iloc[sensor_choice - 1]
+                        sensor = f"{selected_sensor_row['Brand']}_{selected_sensor_row['Type']}"
+                        console.print(f"Selected sensor: [bold cyan]{sensor}[/bold cyan]")
+                        break
+                    else:
+                        console.print(f"[bold red]Invalid selection. Please enter a valid number from the list.[/bold red]")
+                except ValueError:
+                    console.print("[bold red]Invalid input. Please enter a number.[/bold red]")
+                except Exception as e:
+                    console.print(f"[bold red]An error occurred during sensor selection: {e}. Please try again.[/bold red]")
+        else:
+            # If sensor is provided via CLI, use it directly.
+            logger.debug(f"Using sensor from CLI: {sensor}")
+            console.print(f"Using sensor from CLI: [bold cyan]{sensor}[/bold cyan]")
+
+        # Reviewer model selection
+        logger.debug(f"Handling reviewer model selection. CLI provided: {reviewer}")
+        if reviewer is None:
+            logger.debug("No reviewer provided via CLI, prompting for selection")
+            console.print("\n[bold blue]Select a reviewer model:[/bold blue]")
+            available_reviewer_models = cfg.get('reviewer_models', cfg.get('models', []))
+            logger.debug(f"Found {len(available_reviewer_models)} available reviewer models")
+            
+            if display_reviewer_models(available_reviewer_models, console):
+                while True:
+                    try:
+                        reviewer_choice_str = click.prompt(
+                            "Enter the number for the reviewer model (or press Enter to use default/config setting)",
+                            default="", show_default=False, type=str
+                        )
+                        if not reviewer_choice_str:  # User pressed Enter
+                            console.print("[italic]No reviewer selected interactively, will use default/config setting if available.[/italic]")
+                            break
+                        
+                        reviewer_choice = int(reviewer_choice_str)
+                        
+                        # Adjust for 1-based indexing
+                        if 1 <= reviewer_choice <= len(available_reviewer_models):
+                            selected_reviewer_info = available_reviewer_models[reviewer_choice - 1]
+                            reviewer = selected_reviewer_info['id']
+                            console.print(f"Selected reviewer model: [bold cyan]{reviewer}[/bold cyan]")
+                            break
+                        else:
+                            console.print(f"[bold red]Invalid selection. Please enter a valid number from the list.[/bold red]")
+                    except ValueError:
+                        console.print("[bold red]Invalid input. Please enter a number or press Enter.[/bold red]")
+                    except Exception as e:
+                        console.print(f"[bold red]An error occurred during reviewer model selection: {e}. Please try again.[/bold red]")
+        else:
+            console.print(f"Using reviewer model from CLI: [bold cyan]{reviewer}[/bold cyan]")
+
+        # Determine the final reviewer model ID
+        logger.debug("Determining final reviewer model ID")
+        final_reviewer_model_id = reviewer
+        if final_reviewer_model_id is None:
+            final_reviewer_model_id = cfg.get('reviewer_model')  # Use the reviewer_model from config
+            logger.debug(f"No reviewer specified, using config default: {final_reviewer_model_id}")
+
+        if not final_reviewer_model_id:
+            logger.error("No reviewer model specified, selected, or found in config")
+            console.print("[red]No reviewer model specified, selected, or found in config. Cannot proceed with review.[/red]")
+            return
+        
+        logger.debug(f"Final reviewer model ID: {final_reviewer_model_id}")
+        
+        # Initialize API client for reviewer
+        logger.info(f"Initializing API client for reviewer: {final_reviewer_model_id}")
+        try:
+            reviewer_client = create_api_client(final_reviewer_model_id, cfg, purpose="reviewer")
+            logger.debug("API client initialized successfully")
+            
+            # Get reviewer configuration for display
+            _model_conf = None
+            _primary_list = cfg.get('reviewer_models', [])
+            for m_cfg in _primary_list:
+                if m_cfg.get('id') == final_reviewer_model_id:
+                    _model_conf = m_cfg
+                    break
+            if not _model_conf:
+                _fallback_list = cfg.get('models', [])
+                for m_cfg in _fallback_list:
+                    if m_cfg.get('id') == final_reviewer_model_id:
+                        _model_conf = m_cfg
+                        break
+            
+            reviewer_config = _model_conf or {'provider': 'unknown'}
+            logger.debug(f"Reviewer config: {reviewer_config}")
+
+        except ValueError as e:
+            logger.error(f"Failed to initialize reviewer API client: {e}")
+            console.print(f"[red]Failed to initialize reviewer API client for '{final_reviewer_model_id}': {e}[/red]")
+            return
+        except Exception as e:
+            logger.error(f"Unexpected error creating API client: {e}", exc_info=True)
+            console.print(f"[red]An unexpected error occurred while creating API client for reviewer '{final_reviewer_model_id}': {e}[/red]")
+            return
+            
+        console.print(f"Using reviewer: [bold magenta]{final_reviewer_model_id}[/bold magenta] via provider [bold green]{reviewer_config['provider']}[/bold green]")
+        
+        # Initialize ChunkedReviewer
+        logger.info("Initializing ChunkedReviewer")
+        try:
+            # Check review_prompt_template_path exists
+            if 'review_prompt_template_path' not in cfg:
+                logger.warning("review_prompt_template_path not found in config, setting default")
+                cfg['review_prompt_template_path'] = "prompts/review_criteria_prompt.txt"
+            
+            prompt_path = cfg.get('review_prompt_template_path')
+            if not os.path.exists(prompt_path):
+                logger.error(f"Review prompt template not found at {prompt_path}")
+                console.print(f"[red]Error: Review prompt template not found at {prompt_path}[/red]")
+                return
+                
+            logger.debug(f"Verified review prompt template exists at {prompt_path}")
+            
+            # Verify other required paths
+            if 'official_datasheets_path' not in cfg:
+                logger.warning("official_datasheets_path not found in config, setting default")
+                cfg['official_datasheets_path'] = "datasheet/"
+                
+            if 'reviews_base_path' not in cfg:
+                logger.warning("reviews_base_path not found in config, setting default")
+                cfg['reviews_base_path'] = "results/reviews/"
+                
+            chunked_reviewer = ChunkedReviewer(reviewer_client, cfg, logger)
+            logger.debug("ChunkedReviewer initialized successfully")
+        except Exception as e:
+            logger.error(f"Error initializing ChunkedReviewer: {e}", exc_info=True)
+            console.print(f"[red]Error initializing ChunkedReviewer: {e}[/red]")
+            return
+        
+        # Process sensors
+        logger.info("Processing sensor list")
+        sensors_to_process_list = []
+        if sensor == "ALL_SENSORS":
+            if sensors_df is not None and not sensors_df.empty:
+                for _, row_data in sensors_df.iterrows():
+                    sensors_to_process_list.append({'brand': row_data['Brand'], 'type': row_data['Type']})
+                logger.info(f"Processing all {len(sensors_to_process_list)} sensors from sensors.csv.")
+            else:
+                logger.warning("ALL_SENSORS selected, but no sensor data loaded.")
+                console.print("[yellow]Warning: ALL_SENSORS selected, but no sensor data found in sensors.csv.[/yellow]")
+        else:
+            # Specific sensor 'Brand_Type'
+            try:
+                brand_val, sensor_type_val = sensor.split('_', 1)
+                sensors_to_process_list.append({'brand': brand_val, 'type': sensor_type_val})
+                logger.info(f"Processing selected sensor: Brand={brand_val}, Type={sensor_type_val}")
+            except ValueError:
+                logger.error(f"Invalid sensor format: {sensor}. Expected Brand_Type.")
+                console.print(f"[bold red]Error: Invalid sensor format '{sensor}'. Expected Brand_Type. Aborting review.[/bold red]")
+                return
+        
+        if not sensors_to_process_list:
+            logger.warning("No sensors to process")
+            console.print("[yellow]No sensors to process. Exiting review.[/yellow]")
+            return
+        
+        logger.info(f"Starting to process {len(sensors_to_process_list)} sensors")
+        with console.status("[bold green]Processing chunked reviews...[/bold green]") as status:
+            for idx, sensor_info in enumerate(sensors_to_process_list):
+                current_brand = sensor_info['brand']
+                current_sensor_type = sensor_info['type']
+                
+                logger.info(f"Processing sensor {idx+1}/{len(sensors_to_process_list)}: {current_brand} {current_sensor_type}")
+                status.update(f"[bold green]Processing sensor {idx+1}/{len(sensors_to_process_list)}: {current_brand} {current_sensor_type}[/bold green]")
+                console.print(f"\n[bold blue]Reviewing Sensor: {current_brand} {current_sensor_type}[/bold blue]")
+                
+                # Find generated datasheets for this sensor
+                sensor_directory_name = f"{current_brand}_{current_sensor_type}"
+                generated_datasheets_dir = os.path.join(cfg.get('results_base_path', 'results/'), sensor_directory_name)
+                search_pattern = os.path.join(generated_datasheets_dir, '*.md')
+                
+                logger.debug(f"Searching for generated datasheets at: {search_pattern}")
+                found_datasheets = glob.glob(search_pattern)
+                logger.debug(f"Found {len(found_datasheets)} datasheets: {found_datasheets}")
+                
+                if not found_datasheets:
+                    logger.warning(f"No generated datasheets found for {current_brand} {current_sensor_type}")
+                    console.print(f"  [yellow]No generated datasheets found for {current_brand} {current_sensor_type}. Skipping.[/yellow]")
+                    continue
+                    
+                console.print(f"  [green]Found {len(found_datasheets)} generated datasheets to review[/green]")
+                
+                # Process each generated datasheet
+                for datasheet_path in found_datasheets:
+                    filename = os.path.basename(datasheet_path)
+                    logger.info(f"Processing datasheet: {datasheet_path}")
+                    console.print(f"    [cyan]Processing: {filename}[/cyan]")
+                    
+                    # Parse filename to extract generator info
+                    filename_stem = filename[:-3]  # Remove .md extension
+                    parts = filename_stem.split('_')
+                    
+                    if len(parts) < 2:
+                        logger.warning(f"Could not parse provider and model from filename '{filename}'")
+                        console.print(f"      [yellow]Could not parse provider and model from filename '{filename}'. Skipping.[/yellow]")
+                        continue
+                    
+                    # Process review in chunks
+                    try:
+                        logger.info("Starting chunked review process")
+                        review = chunked_reviewer.review_sensor(
+                            final_reviewer_model_id, 
+                            current_brand, 
+                            current_sensor_type, 
+                            datasheet_path
+                        )
+                        
+                        if review:
+                            logger.info(f"Successfully completed chunked review with overall score {review.overall_score}")
+                            console.print(f"      [green]✓ Successfully completed chunked review[/green]")
+                            console.print(f"      [green]✓ Overall score: {review.overall_score}[/green]")
+                        else:
+                            logger.error("Failed to complete review")
+                            console.print(f"      [red]✗ Failed to complete review[/red]")
+                    except Exception as e:
+                        logger.error(f"Error during chunked review: {str(e)}", exc_info=True)
+                        console.print(f"      [red]✗ Error during chunked review: {str(e)}[/red]")
+                    
+                # Add delay between sensors if more sensors to process
+                if idx < len(sensors_to_process_list) - 1:
+                    delay_seconds = cfg.get('sensor_delay_seconds', 60)
+                    if delay_seconds > 0:
+                        logger.info(f"Waiting {delay_seconds} seconds before next sensor")
+                        console.print(f"  [yellow]Waiting {delay_seconds} seconds before next sensor...[/yellow]")
+                        time.sleep(delay_seconds)
+        
+        logger.info("Chunked review process completed!")
+        console.print("\n[bold green]Chunked review process completed![/bold green]")
+        
+    except Exception as e:
+        logger.error(f"Unhandled exception in chunked_review: {e}", exc_info=True)
+        console.print(f"[bold red]An unexpected error occurred: {str(e)}[/bold red]")
+        import traceback
+        console.print(f"[dim]{traceback.format_exc()}[/dim]")
+
+
+if __name__ == "__main__":
     cli()

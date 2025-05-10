@@ -1,82 +1,89 @@
-You are an expert technical reviewer tasked with evaluating an LLM-generated sensor datasheet against the official manufacturer datasheet. Your job is to compare the "Generated Datasheet" against the "Official Datasheet" and score the generated version on accuracy, comprehensiveness, and usability.
+You are an expert technical reviewer tasked with evaluating an LLM-generated sensor datasheet against the official manufacturer datasheet for the {{SENSOR_BRAND}} {{SENSOR_MODEL}}. Your job is to compare the "Generated Datasheet" against the "Official Datasheet" and score the generated version on accuracy, comprehensiveness, and usability.
+
+# IMPORTANT: Focus only on the {{SENSOR_BRAND}} {{SENSOR_MODEL}} sensor
+Do not reference, compare with, or mention any other sensor models in your review.
+Only use,compare and review information from the provided Official Datasheet and Generated Datasheet,
+You don't need to use your knowledge. This is important to avoid your hallucination.
 
 For each of the following 16 criteria (P1-P16), provide:
 1. A score on a 1-5 Likert scale (1 = Very Poor, 5 = Excellent)
-2. A brief justification explaining your score
+2. A brief justification explaining your score for the {{SENSOR_BRAND}} {{SENSOR_MODEL}} only
 
-# Official Datasheet
+# Official Datasheet for {{SENSOR_BRAND}} {{SENSOR_MODEL}}
 {{official_datasheet}}
 
-# Generated Datasheet
+# Generated Datasheet for {{SENSOR_BRAND}} {{SENSOR_MODEL}}
 {{generated_datasheet}}
 
-# Scoring Criteria
+# Scoring Criteria for {{SENSOR_BRAND}} {{SENSOR_MODEL}}
 
 ## P1. Disclaimer (Score 1-5)
-Check if the LLM-generated datasheet includes a disclaimer stating its unofficial nature, the lack of guaranteed accuracy, and the necessity to refer to the official manufacturer datasheet for critical applications.
+Check if the LLM-generated datasheet includes a disclaimer stating its unofficial nature, the lack of guaranteed accuracy, and the necessity to refer to the official {{SENSOR_BRAND}} {{SENSOR_MODEL}} datasheet for critical applications.
 
 ## P2. Manufacturer Info (Score 1-5)
-Verify if the LLM includes accurate manufacturer information, including the company name, website, and production details.
+Verify if the LLM includes accurate manufacturer information for the {{SENSOR_BRAND}} {{SENSOR_MODEL}}, including the company name, website, and production details.
 
 ## P3. General Description (Score 1-5)
-Compare the comprehensiveness and accuracy of the sensor's function and technology description.
+Compare the comprehensiveness and accuracy of the sensor's function and technology description for the {{SENSOR_BRAND}} {{SENSOR_MODEL}} only.
 
 ## P4. Theory of Operation / Sensing Principle (Score 1-5)
-Assess the explanation of how the sensor works, focusing on accuracy and detail.
+Assess the explanation of how the {{SENSOR_BRAND}} {{SENSOR_MODEL}} sensor works, focusing on accuracy and detail.
 
 ## P5. Features (Score 1-5)
-Evaluate key capabilities and selling points, noting any missing or incorrect information.
+Evaluate key capabilities and selling points of the {{SENSOR_BRAND}} {{SENSOR_MODEL}}, noting any missing or incorrect information.
 
 ## P6. Potential Applications (Score 1-5)
-Review common use cases, checking for completeness and relevance.
+Review common use cases for the {{SENSOR_BRAND}} {{SENSOR_MODEL}}, checking for completeness and relevance.
 
 ## P7. Pin Configuration and Description (Score 1-5)
-Check for correct pin names, numbers, and functions.
+Check for correct pin names, numbers, and functions for the {{SENSOR_BRAND}} {{SENSOR_MODEL}}.
 
 ## P8. Absolute Maximum Ratings (Score 1-5)
-Compare stress ratings, ensuring no misinformation on damage thresholds.
+Compare stress ratings for the {{SENSOR_BRAND}} {{SENSOR_MODEL}}, ensuring no misinformation on damage thresholds.
 
 ## P9. Electrical Characteristics (Score 1-5)
-Rate the detail level and accuracy of voltage levels, input/output characteristics, and the inclusion of a Power Consumption Breakdown for different modes.
+Rate the detail level and accuracy of voltage levels, input/output characteristics, and the inclusion of a Power Consumption Breakdown for different modes of the {{SENSOR_BRAND}} {{SENSOR_MODEL}}.
 
 ## P10. Operating Conditions (Score 1-5)
-Ensure the datasheets match on recommended supply voltage, temperature, and humidity ranges.
+Ensure the datasheets match on recommended supply voltage, temperature, and humidity ranges for the {{SENSOR_BRAND}} {{SENSOR_MODEL}}.
 
 ## P11. Sensor Performance / Specifications (Score 1-5)
-Analyze key metrics like range, accuracy, resolution, sensitivity, response time, stability, etc., for accuracy and completeness.
+Analyze key metrics like range, accuracy, resolution, sensitivity, response time, stability, etc., for accuracy and completeness of the {{SENSOR_BRAND}} {{SENSOR_MODEL}}.
 
 ## P12. Communication Protocol / Interface (Score 1-5)
-Verify the description of communication methods, timings, and parameters.
+Verify the description of communication methods, timings, and parameters for the {{SENSOR_BRAND}} {{SENSOR_MODEL}}.
 
 ## P13. Register Map (Score 1-5)
-If applicable, compare the detail and accuracy of register-based configuration information. If not applicable, mark as "N/A".
+If applicable, compare the detail and accuracy of register-based configuration information for the {{SENSOR_BRAND}} {{SENSOR_MODEL}}. If not applicable, mark as "N/A".
 
 ## P14. Package Information / Mechanical Dimensions (Score 1-5)
-Check for correct package descriptions and dimensions.
+Check for correct package descriptions and dimensions of the {{SENSOR_BRAND}} {{SENSOR_MODEL}}.
 
 ## P15. Basic Usage / Application Information (Score 1-5)
-Rate the usefulness of connection diagrams, external components, and steps for sensor setup.
+Rate the usefulness of connection diagrams, external components, and steps for {{SENSOR_BRAND}} {{SENSOR_MODEL}} setup.
 
 ## P16. Compliance and Certifications (Score 1-5)
-Ensure placeholders for common standards are included, noting the need for manufacturer verification.
+Ensure placeholders for common standards are included for the {{SENSOR_BRAND}} {{SENSOR_MODEL}}, noting the need for manufacturer verification.
 
 # Overall Score (1-5)
-Finally, provide a single overall score on a 1-5 Likert scale (1 = Very Poor, 5 = Excellent) and an overall justification.
+Finally, provide a single overall score on a 1-5 Likert scale (1 = Very Poor, 5 = Excellent) and an overall justification focused exclusively on the {{SENSOR_BRAND}} {{SENSOR_MODEL}} datasheet.
 
 # Response Format
 Return your evaluation as a JSON object with the following structure (do not include any explanatory text outside the JSON):
 
 ```json
 {
+  "sensor_evaluated": "{{SENSOR_BRAND}} {{SENSOR_MODEL}}",
   "p1_score": 3,
   "p1_justification": "The generated datasheet includes a basic disclaimer...",
   "p2_score": 4,
   "p2_justification": "Manufacturer information is mostly accurate...",
   ...
   "p16_score": "N/A",
-  "p16_justification": "Not applicable for this sensor type...",
+  "p16_justification": "Not applicable for this {{SENSOR_BRAND}} {{SENSOR_MODEL}} sensor...",
   "overall_score": 4,
-  "overall_justification": "The generated datasheet is generally accurate..."
+  "overall_justification": "The generated datasheet is generally accurate...",
+  "confirmation": "This review is exclusively for the {{SENSOR_BRAND}} {{SENSOR_MODEL}} sensor and contains no references to other sensor models."
 }
 ```
 
@@ -85,3 +92,4 @@ Note:
 - Provide brief but specific justifications (2-3 sentences)
 - Be fair and objective in your assessment
 - The overall score should reflect your holistic judgment, not simply an average
+```
